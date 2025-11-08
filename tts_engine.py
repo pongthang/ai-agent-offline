@@ -13,17 +13,8 @@ import sounddevice as sd
 from kokoro_onnx import Kokoro
 
 class TTS_KOKORO():
-    def __init__(self,finished_event=None):
+    def __init__(self):
         self.kokoro = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
-        self.finished_event = finished_event
-
-    def play_tts(self,text):
-        samples,sample_rate = self.kokoro.create(text, voice="af_sarah", speed=1.0, lang="en-us")
-        sd.play(samples, sample_rate)
-        sd.wait()
-        if self.finished_event:
-            self.finished_event.set()
-
     def generate_tts_audio(self,text):
         return self.kokoro.create(text, voice="af_sarah", speed=1.0, lang="en-us")
     def stop(self):

@@ -6,6 +6,7 @@ import multiprocessing as mp
 from llm import LLM
 from tts_engine import TTS_KOKORO
 from queue import Empty
+import time
 
 DEVICE = None
 q = queue.Queue()
@@ -19,7 +20,7 @@ finished_event.set()
 
 def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_event):
     llm_sys = LLM()
-    tts_sys = TTS_KOKORO(finished_event=finished_event)
+    tts_sys = TTS_KOKORO()
 
     while not stop_event.is_set():
         try:
@@ -39,7 +40,6 @@ def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_eve
             
             # send to main process
             audio_queue.put((samples, sample_rate))
-            # finished_event.set()
 
 
 llm_tts_process = mp.Process(
@@ -52,7 +52,8 @@ llm_tts_process.start()
 def callback(indata, frames, time, status):
     if status:
         print(status, file=sys.stderr)
-    q.put_nowait(bytes(indata))
+    if finished_event.is_set():
+        q.put_nowait(bytes(indata))
 
 
 try:
@@ -80,6 +81,7 @@ try:
                 finished_event.clear()
                 sd.play(samples, sr)
                 sd.wait()
+                time.sleep(0.5)
                 finished_event.set()
             except queue.Empty:
                 pass
