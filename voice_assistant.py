@@ -8,6 +8,7 @@ from tts_engine import TTS_KOKORO
 from queue import Empty
 import time
 
+# stream_tts=True
 DEVICE = None
 q = queue.Queue()
 transcript_queue = mp.Queue()
@@ -21,6 +22,7 @@ finished_event.set()
 def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_event):
     llm_sys = LLM()
     tts_sys = TTS_KOKORO()
+    stream_tts =True
 
     while not stop_event.is_set():
         try:
@@ -32,14 +34,20 @@ def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_eve
             text = transcript["text"]
             finished_event.clear()
             print("User -->", text)
-            llm_output = llm_sys.get_response(text)
-            print("Agent -->", llm_output)
 
-            # generate audio samples without playing them
-            samples, sample_rate = tts_sys.generate_tts_audio(llm_output)
-            
-            # send to main process
-            audio_queue.put((samples, sample_rate))
+            if not stream_tts:
+                llm_output = llm_sys.get_response(text)
+                print("Agent -->", llm_output)
+
+                
+                # generate audio samples without playing them
+                samples, sample_rate = tts_sys.generate_tts_audio(llm_output)
+                
+                # send to main process
+                audio_queue.put((samples, sample_rate))
+                audio_queue.put("done")
+            else:
+                llm_sys.get_stream_response(text,audio_queue,tts_sys)
 
 
 llm_tts_process = mp.Process(
@@ -77,12 +85,19 @@ try:
             # 🧠 check for incoming audio from TTS worker
             try:
                 
-                samples, sr = audio_queue.get_nowait()
-                finished_event.clear()
-                sd.play(samples, sr)
-                sd.wait()
-                time.sleep(0.5)
-                finished_event.set()
+                data = audio_queue.get_nowait()
+                if data=="done":
+                        sd.wait()
+                        time.sleep(0.5)
+                        finished_event.set()
+                else:
+                    samples, sr = data
+                    finished_event.clear()
+                    sd.play(samples, sr)
+                    sd.wait()
+              
+                    
+
             except queue.Empty:
                 pass
 
