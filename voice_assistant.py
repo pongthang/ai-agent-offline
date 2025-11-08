@@ -75,8 +75,9 @@ try:
         while not stop_event.is_set():
             # 🧠 check for incoming audio from TTS worker
             try:
-                finished_event.clear()
+                
                 samples, sr = audio_queue.get_nowait()
+                finished_event.clear()
                 sd.play(samples, sr)
                 sd.wait()
                 finished_event.set()
