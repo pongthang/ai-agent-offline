@@ -6,6 +6,10 @@
 - Language Model (LM) - Qwen 0.5b
 - Text to speech(TTS) - Kokoro
 
+## Prompt sharing
+
+Today, we reach an era where prompt becomes new programming language and LLM becomes the compiler. So I believe sharing our prompt while developing things will be a great help to other and our own development. So, feel free to check the prompts in the [prompts_development](./prompts_development/) for more. 
+
 ## How to setup the project
 
 #### Install ollama - for hosting LM
@@ -104,6 +108,4 @@ Now you can talk to your offline personal voice assistant.
 #### Feel free to raise a issue if you face any difficulties and to contribute in this project.
 ### MIT License
 
-```
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

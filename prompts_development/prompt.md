@@ -1,3 +1,8 @@
+I start brain storming with the below prompts:
+
+##################################
+Prompt1:
+
 I want to build an offline voice assistant ai-gent in a system of 4GB ram, 4 core , running lubuntu 24. consider below ai models.
 1. LLM - qwen 0.5b running using ollama.
 2. vosk -asr and vad
@@ -13,3 +18,5 @@ payload = {
 
 ```
 keep the program running until user say lets stop , or stop this.
+
+##################################
