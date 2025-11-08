@@ -1,0 +1,5 @@
+sounddevice 
+vosk  
+requests 
+numpy
+kokoro-onnx

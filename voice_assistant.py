@@ -8,8 +8,13 @@ from tts_engine import TTS_KOKORO
 from queue import Empty
 import time
 
-# stream_tts=True
+# Environment variables
 DEVICE = None
+stream_tts=True
+url= "http://192.168.31.176:11434/api/generate"
+
+
+
 q = queue.Queue()
 transcript_queue = mp.Queue()
 audio_queue = mp.Queue()          # 👈 add this for TTS audio transfer
@@ -19,10 +24,9 @@ stop_event = mp.Event()
 finished_event.set()
 
 
-def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_event):
-    llm_sys = LLM()
+def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_event,stream_tts=True):
+    llm_sys = LLM(url=url)
     tts_sys = TTS_KOKORO()
-    stream_tts =True
 
     while not stop_event.is_set():
         try:
@@ -52,7 +56,7 @@ def llm_tts_process_func(transcript_queue, audio_queue, finished_event, stop_eve
 
 llm_tts_process = mp.Process(
     target=llm_tts_process_func,
-    args=(transcript_queue, audio_queue, finished_event, stop_event)
+    args=(transcript_queue, audio_queue, finished_event, stop_event,stream_tts)
 )
 llm_tts_process.start()
 
